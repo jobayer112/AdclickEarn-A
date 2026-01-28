@@ -5,17 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AdClickEarn - Earn Money by Watching Ads</title>
     
-    <!-- Adsterra Ads -->
-    <script type="text/javascript">
-        atOptions = {
-            'key' : 'ca87947122692a9be97f3295042c9179',
-            'format' : 'iframe',
-            'height' : 50,
-            'width' : 320,
-            'params' : {}
-        };
-    </script>
-    <script type="text/javascript" src="//www.progenybanquet.com/bzkay91h1c.js"></script>
+    <!-- Monetag SDK -->
+    <script src='//libtl.com/sdk.js' data-zone='10512235' data-sdk='show_10512235'></script>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -96,7 +87,7 @@
     </div>
 
     <!-- Auth Section -->
-    <div id="auth-section" class="min-h-screen p-6 flex-col justify-center main-page active">
+    <div id="auth-section" class="min-h-screen p-6 flex-col justify-center main-page">
         <div class="text-center mb-8">
             <h1 class="text-4xl font-bold mb-2 gradient-text">AdClickEarn</h1>
             <p class="text-gray-400 mb-8">Earn Money by Watching Ads</p>
@@ -202,7 +193,7 @@
                             </div>
                         </div>
 
-                        <!-- Ad Rewards -->
+                        <!-- Ad Rewards (Monetag SDK ads) -->
                         <div class="bg-gradient-to-r from-orange-900/30 to-red-900/30 p-3 rounded-lg border border-orange-800/50">
                             <h3 class="text-sm font-semibold text-orange-300 mb-2">Watch Ads & Earn More</h3>
                             
@@ -213,11 +204,11 @@
                                             <i data-lucide="tv" class="w-5 h-5 text-orange-400"></i>
                                         </div>
                                         <div>
-                                            <h3 class="font-semibold">Watch Short Ad</h3>
+                                            <h3 class="font-semibold">Watch Short Ad (Monetag)</h3>
                                             <p class="text-xs text-gray-300">Reward: 25-50 Coins</p>
                                         </div>
                                     </div>
-                                    <button class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn" onclick="showAdsterraInterstitial()">Watch Now</button>
+                                    <button class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded-lg text-sm btn" onclick="claimReward('interstitial')">Watch Now</button>
                                 </div>
 
                                 <div class="bg-gradient-to-r from-green-500/20 to-emerald-500/20 p-3 rounded-lg flex items-center justify-between">
@@ -226,11 +217,11 @@
                                             <i data-lucide="mouse-pointer" class="w-5 h-5 text-green-400"></i>
                                         </div>
                                         <div>
-                                            <h3 class="font-semibold">Click Reward</h3>
+                                            <h3 class="font-semibold">Click Reward (Monetag)</h3>
                                             <p class="text-xs text-gray-300">Instant: 10-30 Coins</p>
                                         </div>
                                     </div>
-                                    <button class="bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-lg text-sm btn" onclick="showAdsterraPopup()">Click Now</button>
+                                    <button class="bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-lg text-sm btn" onclick="claimReward('popup')">Click Now</button>
                                 </div>
                             </div>
                         </div>
@@ -466,18 +457,6 @@
         </div>
     </div>
 
-    <!-- Adsterra Popup Script -->
-    <script type="text/javascript">
-        var atPopupOptions = {
-            'key' : '3650327b8916680f59445f08ed9a14e0',
-            'format' : 'iframe',
-            'height' : 250,
-            'width' : 300,
-            'params' : {}
-        };
-    </script>
-    <script type="text/javascript" src="//www.progenybanquet.com/vp8vd3gx.js"></script>
-
     <script type="module">
         // Firebase Configuration
         const firebaseConfig = {
@@ -510,7 +489,7 @@
         const MAX_VISITS_PER_WEBSITE = 20;
         const TOTAL_WEBSITE_COUNT = 3;
 
-        // Specific website URLs as requested
+        // Specific Adsterra website URLs as requested
         const WEBSITE_URLS = {
             web1: "https://progenybanquet.com/vp8vd3gx?key=3650327b8916680f59445f08ed9a14e0",
             web2: "https://progenybanquet.com/vz23fszi0d?key=e9717a371e08d72af2b19dcd302faf93",
@@ -558,80 +537,6 @@
             onAuthStateChanged(auth, handleAuthStateChange);
             setTimeout(openWelcomeModal, 1000);
         };
-
-        // Adsterra Functions
-        window.showAdsterraInterstitial = function() {
-            if (userData.dailyAdCount >= (appConfig.dailyAdLimit || 15)) {
-                return showAlert("Daily ad limit reached! Come back tomorrow.");
-            }
-            
-            // Open Adsterra interstitial ad
-            try {
-                const adWindow = window.open('about:blank', '_blank');
-                adWindow.location.href = 'https://progenybanquet.com/bzkay91h1c?key=ca87947122692a9be97f3295042c9179';
-                
-                // Start timer and reward after 30 seconds
-                showAlert("Please watch the ad for 30 seconds to earn reward...");
-                setTimeout(async () => {
-                    await processAdReward(25, 50); // Random between 25-50 coins
-                    adWindow.close();
-                }, 30000);
-            } catch (error) {
-                showAlert("Could not open ad. Please allow popups.");
-            }
-        };
-
-        window.showAdsterraPopup = function() {
-            if (userData.dailyAdCount >= (appConfig.dailyAdLimit || 15)) {
-                return showAlert("Daily ad limit reached! Come back tomorrow.");
-            }
-            
-            // Open Adsterra popup ad
-            try {
-                const popup = window.open('about:blank', 'adPopup', 'width=600,height=400,scrollbars=yes');
-                popup.location.href = 'https://progenybanquet.com/vp8vd3gx?key=3650327b8916680f59445f08ed9a14e0';
-                
-                // Start timer and reward after 30 seconds
-                showAlert("Please watch the ad for 30 seconds to earn reward...");
-                setTimeout(async () => {
-                    await processAdReward(10, 30); // Random between 10-30 coins
-                    popup.close();
-                }, 30000);
-            } catch (error) {
-                showAlert("Could not open ad. Please allow popups.");
-            }
-        };
-
-        async function processAdReward(min, max) {
-            if (!currentUser) return;
-            
-            const today = new Date().toISOString().split('T')[0];
-            if (userData.lastAdWatchDate !== today) {
-                userData.dailyAdCount = 0;
-            }
-            
-            if (userData.dailyAdCount >= (appConfig.dailyAdLimit || 15)) {
-                showAlert("Daily ad limit reached! Come back tomorrow.");
-                return;
-            }
-            
-            // Generate random reward between min and max
-            const rewardAmount = Math.floor(Math.random() * (max - min + 1)) + min;
-            
-            // Update user data
-            userData.dailyAdCount = (userData.dailyAdCount || 0) + 1;
-            userData.lastAdWatchDate = today;
-            
-            const userRef = doc(db, "users", currentUser.uid);
-            await updateDoc(userRef, {
-                dailyAdCount: userData.dailyAdCount,
-                lastAdWatchDate: today
-            });
-            
-            // Add reward to balance
-            await updateBalance(rewardAmount);
-            showAlert(`Congratulations! You earned ${rewardAmount} coins for watching the ad.`);
-        }
 
         function openWelcomeModal() { 
             document.getElementById('welcome-modal').classList.remove('hidden'); 
@@ -1303,7 +1208,7 @@
             }
         }
 
-        // Website visit tasks - UPDATED with specific URLs
+        // Website visit tasks (Adsterra links)
         window.startWebTask = async function(taskId, websiteNumber) {
             // Check which website array to use
             const websiteKey = `web${websiteNumber}`;
@@ -1319,7 +1224,7 @@
                 return showAlert(`Daily limit reached for Website ${websiteNumber}! You can do 20 visits per website per day.`);
             }
 
-            // Get the specific website URL based on website number
+            // Get the specific Adsterra website URL based on website number
             let websiteUrl;
             switch(websiteNumber) {
                 case 1:
@@ -1351,7 +1256,7 @@
             // Show alert with instructions
             showAlert(`Please visit the website for 30 seconds to earn 50 coins. (Website ${websiteNumber}, Visit ${taskId}/20)`);
             
-            // Open website in new tab
+            // Open Adsterra website in new tab
             window.open(websiteUrl, '_blank');
             
             btn.disabled = true;
@@ -1427,6 +1332,83 @@
                 }
             }, 1000);
         };
+
+        // Ad rewards (Monetag SDK ads - ONLY for Watch Ad and Click Reward buttons)
+        window.claimReward = async function(taskType) {
+            const today = new Date().toISOString().split('T')[0];
+            const userRef = doc(db, "users", currentUser.uid);
+
+            if (userData.lastAdWatchDate !== today) {
+                await updateDoc(userRef, { dailyAdCount: 0, lastAdWatchDate: today });
+                userData.dailyAdCount = 0;
+                userData.lastAdWatchDate = today;
+            }
+
+            if (userData.dailyAdCount >= (appConfig.dailyAdLimit || 15)) {
+                return showAlert("Daily limit reached! Come back tomorrow.");
+            }
+            
+            if (typeof window.show_10512235 !== 'function') {
+                return showAlert("Ad service currently unavailable. Check your internet connection.");
+            }
+
+            const eventBtn = window.event ? (window.event.target.closest('button') || window.event.target) : null;
+            const originalBtnText = eventBtn ? eventBtn.innerHTML : "Claim";
+            
+            let adPromise;
+            loader.style.display = 'flex';
+            try {
+                switch(taskType) {
+                    case 'interstitial': adPromise = window.show_10512235(); break;
+                    case 'popup': adPromise = window.show_10512235('pop'); break;
+                    default: return;
+                }
+                
+                await adPromise;
+                loader.style.display = 'none';
+
+                if(eventBtn) {
+                    eventBtn.disabled = true;
+                    let waitTime = 30;
+                    eventBtn.innerHTML = `<span class="pulse-anim">⏳</span> ${waitTime}s`;
+                    
+                    const adTimer = setInterval(async () => {
+                        waitTime--;
+                        eventBtn.innerHTML = `<span class="pulse-anim">⏳</span> ${waitTime}s`;
+                        
+                        if (waitTime <= 0) {
+                            clearInterval(adTimer);
+                            eventBtn.disabled = false;
+                            eventBtn.innerHTML = originalBtnText;
+                            await processReward();
+                        }
+                    }, 1000);
+                } else {
+                    // If no button found, just process after 30 seconds
+                    setTimeout(async () => { 
+                        await processReward(); 
+                    }, 30000);
+                }
+
+                async function processReward() {
+                    const newCount = (userData.dailyAdCount || 0) + 1;
+                    await updateDoc(userRef, { dailyAdCount: newCount });
+                    userData.dailyAdCount = newCount;
+                    
+                    // Random reward between 25-50 coins
+                    let rewardAmount = Math.floor(Math.random() * 26) + 25;
+                    await updateBalance(rewardAmount);
+                    
+                    showAlert(`Congratulations! You have earned ${rewardAmount} coins.`);
+                    updateUI();
+                }
+
+            } catch(e) {
+                console.error("Ad error:", e);
+                loader.style.display = 'none';
+                showAlert('Could not show ad. Please try again later.');
+            }
+        }
 
         // Alert function
         function showAlert(message) {
